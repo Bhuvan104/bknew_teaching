@@ -9,14 +9,35 @@
 <body>
    
      <div class="container">
+        {% if messages %}
+                {% for message in messages %}
+                {% if message.tags == 'error' %}
+                  <div class="alert alert-danger" role="alert">
+                    <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                  </div>
+                {%else%}
+                <div class="alert alert-success" role="alert">
+                    <p{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</p>
+                  </div>
+                {%endif%}
+                {% endfor %}
+           </div>
+        {% endif %}
         <div style="width:40%;margin-left:400px">
             <h2>User Registration</h2>
             <div class="form-group">
-                <form method="POST" action='.'>
+                <form method="POST" action='.' enctype="multipart/form-data">
                     {% csrf_token %}
-                    {% comment %} {{ form.first_name }} {% endcomment %}
-                    {{ form.as_p }}
-                    <button type="submit">Register</button>
+                    {{ form.as_p }} 
+                    {% comment %} {{ form.first_name }} 
+                    {{ form.email }} 
+                    {{ form.password }} 
+                    {{ form.confirm_password }} 
+                    {% if form.errors.confirm_password %}
+                      <p>{{ form.errors.confirm_password }}</p>
+                     {% endif %} {% endcomment %}
+
+                    <button class='btn btn-primary' type="submit">Register</button>
                 </form>
             </div> 
         </div>
